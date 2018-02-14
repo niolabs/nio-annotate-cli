@@ -128,7 +128,7 @@ program
   .command('update')
   .description('update an annotation meta')
   .option('-s, --service <service>', 'service name')
-  .option('-i, --index <index>', 'annotation index', i => parseInt(i, 10), -1)
+  .option('-i, --index <index>', 'annotation index', i => parseInt(i, 10), undefined)
   .action(async (options) => {
     try {
       const service = await (options.service || chooseService(program));
@@ -144,7 +144,7 @@ program
       const metadata = JSON.parse(serviceConfig[sysMetadataKey]);
       const annotations = metadata[annotationsKey] || [];
 
-      const index = (options.index !== -1) ?  options.index : chooseIndex(annotations);
+      const index = (options.index !== undefined) ?  options.index : chooseIndex(annotations);
 
       const updated = update(serviceConfig, annotations[index]);
       annotations.splice(index, 1, updated);
@@ -164,7 +164,7 @@ program
   .alias('set')
   .description('set an annotation content')
   .option('-s, --service <service>', 'service name')
-  .option('-i, --index <index>', 'annotation index', i => parseInt(i, 10), -1)
+  .option('-i, --index <index>', 'annotation index', i => parseInt(i, 10), undefined)
   .action(async (file, options) => {
     try {
       const content = readFileSync(file, { encoding: 'utf8'});
@@ -182,7 +182,7 @@ program
       const metadata = JSON.parse(serviceConfig[sysMetadataKey]);
       const annotations = metadata[annotationsKey] || [];
 
-      const index = (options.index !== -1) ?  options.index : chooseIndex(annotations);
+      const index = (options.index !== undefined) ?  options.index : chooseIndex(annotations);
 
       const updated = {
         ...annotations[index],
@@ -244,7 +244,7 @@ program
   .alias('rm')
   .description('remove an annotation')
   .option('-s, --service <service>', 'service name')
-  .option('-i, --index <index>', 'index to remove', i => parseInt(i, 10), -1)
+  .option('-i, --index <index>', 'index to remove', i => parseInt(i, 10), undefined)
   .action(async (options) => {
     try {
       const service = await (options.service || chooseService(program));
@@ -259,9 +259,9 @@ program
       const metadata = JSON.parse(serviceConfig[sysMetadataKey]);
       const annotations = metadata[annotationsKey] || [];
 
-      const index = (options.index !== -1) ?  options.index : chooseIndex(annotations);
+      const index = (options.index !== undefined) ?  options.index : chooseIndex(annotations);
 
-      annotations.splice(options.index, 1);
+      annotations.splice(index, 1);
 
       console.log('\nupdating...');
       await save(program, service, serviceConfig, annotations)

@@ -45,7 +45,7 @@ async function chooseService(program) {
   const url = `${program.host}/services`;
   const services = await fetch(url, { headers }).then(isOk).then(r => r.json());
   const options = Object.keys(services).filter(n => n !== '__instance_metadata__').sort();
-  const selection = readline.keyInSelect(options, "service: ", { cancel: chalk.red("CANCEL") });
+  const selection = readline.keyInSelect(options, "service: ", { cancel: chalk.red.dim("[CANCEL]") });
   if (selection === -1) { process.exit(-1); }
   return options[selection];
 }
@@ -59,7 +59,7 @@ function chooseIndex(annotations) {
   }
 
   const options = annotations.map(preview);
-  const selection = readline.keyInSelect(options, "annotation: ");
+  const selection = readline.keyInSelect(options, "annotation: ", { cancel: chalk.red.dim("[CANCEL]") });
   if (selection === -1) { process.exit(-1); }
   return selection;
 }

@@ -1,4 +1,5 @@
 const readline = require('readline-sync');
+const chalk = require('chalk');
 
 const positions = ['absolute', 'right', 'below', 'left', 'above'];
 
@@ -15,7 +16,7 @@ module.exports = (serviceConfig, annotation = {}) => {
   const targetIndex = (isRelative) ? readline.keyInSelect(
     blocks,
     "target:",
-    { cancel: annotation.target ? `current: ${annotation.target}` : false }
+    { cancel: annotation.target ? chalk`{dim current:} {green ${annotation.target}}` : false }
   ) : null;
 
   const target = (targetIndex === null) ? null :

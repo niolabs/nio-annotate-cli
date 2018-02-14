@@ -9,7 +9,7 @@ $ npm install -g niolabs/nio-annotate-cli
 ## Usage
 
 ```text
-  Usage: nio-annotate.sh [options] [command]
+  Usage: nio-annotate [options] [command]
 
   A CLI tool for managing nio service annotations
 

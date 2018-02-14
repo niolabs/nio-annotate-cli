@@ -1,0 +1,22 @@
+{
+  "name": "@nio/annotate-cli",
+  "version": "0.0.0",
+  "description": "Manage nio annotations from the cli",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "bin": {
+    "nio-annotate": "bin/nio-annotate.sh"
+  },
+  "dependencies": {
+    "chalk": "^2.3.1",
+    "cli-truncate": "^1.1.0",
+    "commander": "^2.14.1",
+    "node-fetch": "^2.0.0",
+    "readline-sync": "^1.4.8",
+    "word-wrap": "^1.2.3"
+  }
+}

@@ -45,6 +45,15 @@ async function chooseService(program) {
   const url = `${program.host}/services`;
   const services = await fetch(url, { headers }).then(isOk).then(r => r.json());
   const options = Object.keys(services).filter(n => n !== '__instance_metadata__').sort();
+  if (options.length === 0) {
+    readline.keyInPause('This insance has no services. exiting...');
+    process.exit(-1);
+  }
+  if (options.length > 35) {
+    readline.keyInPause('This instance has too many services to select interactivly. Use --service <name> to select a service. exiting...')
+    process.exit(-1);
+  }
+
   const selection = readline.keyInSelect(options, "service: ", { cancel: chalk.red.dim("[CANCEL]") });
   if (selection === -1) { process.exit(-1); }
   return options[selection];

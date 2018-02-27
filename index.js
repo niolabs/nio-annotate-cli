@@ -45,7 +45,12 @@ async function chooseService(program) {
   }
   const url = `${program.host}/services`;
   const services = await fetch(url, { headers }).then(isOk).then(r => r.json());
-  const options = Object.keys(services).filter(n => n !== '__instance_metadata__').sort();
+  const options = Object.keys(services)
+    .filter(n => n !== '__instance_metadata__')
+    .sort();
+
+  const displayOptions = options
+    .map(x => chalk.bold(x));
   if (options.length === 0) {
     readline.keyInPause('This insance has no services. exiting...');
     process.exit(-1);
@@ -55,7 +60,7 @@ async function chooseService(program) {
     process.exit(-1);
   }
 
-  const selection = readline.keyInSelect(options, "service: ", { cancel: chalk.red.dim("[CANCEL]") });
+  const selection = readline.keyInSelect(displayOptions, "service: ", { cancel: chalk.red.dim("[CANCEL]") });
   if (selection === -1) { process.exit(-1); }
   return options[selection];
 }
@@ -69,7 +74,9 @@ function chooseIndex(annotations) {
   }
 
   const options = annotations.map(preview);
-  const selection = readline.keyInSelect(options, "annotation: ", { cancel: chalk.red.dim("[CANCEL]") });
+  const displayOptions = options
+    .map(x => chalk.bold(x));
+  const selection = readline.keyInSelect(displayOptions, "annotation: ", { cancel: chalk.red.dim("[CANCEL]") });
   if (selection === -1) { process.exit(-1); }
   return selection;
 }
@@ -91,6 +98,7 @@ program
 
       const url = `${program.host}/services/${encodeURIComponent(service)}`
       const s = await fetch(url, { headers }).then(isOk).then(r => r.json());
+
       const annotations = JSON.parse(s[sysMetadataKey])[annotationsKey] || [];
       const output = options.json ? JSON.stringify(annotations) : `\n${format(annotations)}\n`;
       console.log(output);

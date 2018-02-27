@@ -35,6 +35,7 @@ program.version('0.0.1')
   .description("A CLI tool for managing nio service annotations")
   .option('-a, --auth <basic>', 'auth', 'Admin:Admin')
   .option('-h, --host <host>', 'nio host', 'http://127.0.0.1:8181')
+  .option('--color', 'enable colors')
   .option('-v, --verbose');
 
 async function chooseService(program) {
@@ -311,3 +312,4 @@ program
 
 program.parse(process.argv);
 if (!program.args.length) program.help();
+chalk.enabled = !!program.color

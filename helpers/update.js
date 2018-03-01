@@ -1,6 +1,8 @@
 const readline = require('readline-sync');
 const chalk = require('chalk');
 
+const multiline = require('./multiline');
+
 const positions = ['absolute', 'right', 'below', 'left', 'above'];
 
 module.exports = (serviceConfig, annotation = {}) => {
@@ -56,7 +58,7 @@ module.exports = (serviceConfig, annotation = {}) => {
     },
   );
 
-  const content = annotation.content || readline.question('content: ');
+  const content = annotation.content || multiline("content: ");
 
   return {
     position,

@@ -9,6 +9,7 @@ const wrap = require('word-wrap');
 
 const save = require('./helpers/save');
 const update = require('./helpers/update');
+const multiline = require('./helpers/multiline');
 
 const annotationsKey = 'd29b0693-de28-5b3e-9753-65b464106540';
 const sysMetadataKey = 'sys_metadata';
@@ -178,15 +179,13 @@ program
   });
 
 program
-  .command('set-content <file>')
-  .alias('set')
+  .command('set [file]')
   .description('set an annotation content')
+  .option('--content-only', 'set content only', false)
   .option('-s, --service <service>', 'service name')
   .option('-i, --index <index>', 'annotation index', i => parseInt(i, 10), undefined)
   .action(async (file, options) => {
     try {
-      const content = readFileSync(file, { encoding: 'utf8'});
-
       const service = await (options.service || chooseService(program));
 
       const headers = {};
@@ -202,10 +201,13 @@ program
 
       const index = (options.index !== undefined) ?  options.index : chooseIndex(annotations);
 
-      const updated = {
+      const content = file ? readFileSync(file, { encoding: 'utf8'})
+        : multiline(options.contentOnly ? "content:" : "JSON:");
+
+      const updated = options.contentOnly ? {
         ...annotations[index],
         content,
-      };
+      } : JSON.parse(content);
 
       annotations.splice(index, 1, updated);
 
@@ -221,9 +223,9 @@ program
 
 
 program
-  .command('show')
+  .command('get')
   .description('show a single annotation')
-  .alias('cat')
+  .alias('show')
   .option('-s, --service <service>', 'service name')
   .option('-i, --index <index>', 'annotation index', i => parseInt(i, 10), -1)
   .option('--content-only', 'show content only', false)

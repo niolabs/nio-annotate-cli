@@ -1,6 +1,6 @@
 {
   "name": "@nio/annotate-cli",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Manage nio annotations from the cli",
   "main": "index.js",
   "scripts": {
